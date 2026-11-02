@@ -36,6 +36,16 @@ a{color:#0876a8;font-weight:650}.muted{color:#5d6878;font-size:.92rem}.tag{displ
 </section>
 
 <section>
+<h2>موبائل الرٹس</h2>
+<div class="notice">یہ براؤزر نوٹیفکیشن صرف اسی وقت کام کرے گا جب یہ صفحہ کھلا ہو اور آپ کے براؤزر میں اجازت دی گئی ہو۔ صفحہ بند ہونے پر مسلسل نگرانی یا الرٹ کی ضمانت نہیں۔</div>
+<div class="actions">
+<button id="enableAlerts" type="button">نوٹیفکیشن کی اجازت دیں</button>
+<button id="testAlert" class="secondary" type="button">ٹیسٹ الرٹ بھیجیں</button>
+</div>
+<p id="alertStatus" class="muted">نوٹیفکیشن کی اجازت ابھی چیک نہیں ہوئی۔</p>
+</section>
+
+<section>
 <h2>درخواستوں کا خلاصہ</h2>
 <div class="stats">
 <div class="stat">کل ریکارڈ<b id="total">0</b></div>
@@ -63,6 +73,13 @@ a{color:#0876a8;font-weight:650}.muted{color:#5d6878;font-size:.92rem}.tag{displ
 </section>
 
 <section>
+<h2>دستیابی چیک کرنے کا محفوظ طریقہ</h2>
+<p>سرکاری پورٹل کھول کر دستیاب وقت خود چیک کریں۔ یہ ڈیش بورڈ پورٹل کے اندر خودکار تلاش یا اسکرین کی نگرانی نہیں کرتا۔</p>
+<button id="openPortal" type="button">سرکاری پورٹل کھولیں اور وقت چیک کریں</button>
+<p class="muted">وقت دستیاب ملنے پر اوپر والے ریکارڈ میں اسٹیٹس «وقت مل گیا» منتخب کرکے محفوظ کریں۔ اگر نوٹیفکیشن کی اجازت ہے تو اسی وقت الرٹ بھی آئے گا۔</p>
+</section>
+
+<section>
 <h2>سرکاری Cita تلاش کرنے میں رہنمائی</h2>
 <ol class="steps">
 <li>نیچے دیے گئے بٹن سے سرکاری پورٹل کھولیں۔</li>
@@ -73,7 +90,7 @@ a{color:#0876a8;font-weight:650}.muted{color:#5d6878;font-size:.92rem}.tag{displ
 <li>آخری تصدیق کے بعد ہی ریکارڈ کا اسٹیٹس «وقت مل گیا» یا «مکمل» کریں۔</li>
 </ol>
 <a href="https://citaprevia.administracionelectronica.gob.es/icpplus/citar" target="_blank" rel="noopener noreferrer"><button type="button">سرکاری Cita پورٹل کھولیں</button></a>
-<p class="muted">پورٹل کی دستیابی، تقاضے اور اوقات متعلقہ دفتر کے اختیار میں ہیں۔ یہ ڈیش بورڈ ان کی ضمانت نہیں دیتا۔</p>
+<p class="muted">پورٹل کی دستیابی، تقاضے اور اوقات متعلقہ دفتر کے اختیار میں ہیں۔ CAPTCHA اور OTP آپ خود سرکاری پورٹل پر درج کریں۔ ڈیش بورڈ OTP نہیں مانگتا، وصول نہیں کرتا اور محفوظ نہیں کرتا۔</p>
 </section>
 
 <section>
@@ -164,9 +181,34 @@ $('recordForm').addEventListener('submit',event=>{
  const duplicate=records.some(x=>x.code.toLocaleLowerCase()===code.toLocaleLowerCase()&&x.id!==editId);
  if(duplicate&&!confirm('یہ کیس کوڈ پہلے سے موجود ہے۔ کیا پھر بھی محفوظ کرنا ہے؟'))return;
  const data={id:editId||((crypto&&crypto.randomUUID)?crypto.randomUUID():String(Date.now())+'-'+Math.random().toString(16).slice(2)),code,city:$('city').value,kind:$('kind').value,date:$('date').value,status:$('status').value,notes:$('notes').value.trim()};
+ const previous=editId?records.find(x=>x.id===editId):null;
  if(editId){const i=records.findIndex(x=>x.id===editId);if(i>=0)records[i]=data;else records.unshift(data);}
  else records.unshift(data);
- if(persist()){resetForm();render();}
+ if(persist()){
+  if(data.status==='وقت مل گیا'&&(!previous||previous.status!=='وقت مل گیا'))notifyUser('Cita کا وقت مل گیا','آپ کے ریکارڈ '+data.code+' کا اسٹیٹس وقت مل گیا ہے۔ سرکاری پورٹل پر تفصیل خود تصدیق کریں۔');
+  resetForm();render();
+ }
+});
+function notifyUser(title,body){
+ if('Notification' in window&&Notification.permission==='granted'){
+  try{new Notification(title,{body,tag:'spain-cita-alert'});}catch(error){}
+ }
+}
+$('enableAlerts').addEventListener('click',async()=>{
+ if(!('Notification' in window)){ $('alertStatus').textContent='یہ براؤزر نوٹیفکیشن سپورٹ نہیں کرتا۔';return; }
+ try{
+  const permission=await Notification.requestPermission();
+  $('alertStatus').textContent=permission==='granted'?'نوٹیفکیشن کی اجازت مل گئی۔':permission==='denied'?'اجازت بند ہے؛ براؤزر کی Site Settings میں اجازت بدلیں۔':'اجازت نہیں دی گئی۔';
+ }catch(error){$('alertStatus').textContent='اجازت حاصل نہیں ہو سکی۔';}
+});
+$('testAlert').addEventListener('click',()=>{
+ if(!('Notification' in window)||Notification.permission!=='granted'){
+  alert('پہلے «نوٹیفکیشن کی اجازت دیں» دبائیں۔');return;
+ }
+ notifyUser('Spain Cita — ٹیسٹ الرٹ','موبائل نوٹیفکیشن درست طور پر فعال ہے۔');
+});
+$('openPortal').addEventListener('click',()=>{
+ window.open('https://citaprevia.administracionelectronica.gob.es/icpplus/citar','_blank','noopener,noreferrer');
 });
 $('cancelEdit').addEventListener('click',resetForm);
 $('filterText').addEventListener('input',render);
