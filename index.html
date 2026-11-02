@@ -46,6 +46,16 @@ a{color:#0876a8;font-weight:650}.muted{color:#5d6878;font-size:.92rem}.tag{displ
 </section>
 
 <section>
+<h2>خود یاددہانی — Cita چیک کریں</h2>
+<p>یہ فیچر مقررہ وقفے سے آپ کو سرکاری پورٹل کھول کر خود وقت چیک کرنے کی یاددہانی دے گا۔ یہ دستیابی خود نہیں پڑھتا اور صفحہ کھلا رہنا ضروری ہے۔</p>
+<div class="grid">
+<div><label for="reminderMinutes">یاددہانی کا وقفہ</label><select id="reminderMinutes"><option value="5">ہر 5 منٹ</option><option value="10" selected>ہر 10 منٹ</option><option value="15">ہر 15 منٹ</option><option value="30">ہر 30 منٹ</option></select></div>
+<div><label>یاددہانی کنٹرول</label><button id="startReminder" type="button">یاددہانی شروع کریں</button><button id="stopReminder" class="secondary" type="button">یاددہانی بند کریں</button></div>
+</div>
+<p id="reminderStatus" class="muted">یاددہانی بند ہے۔</p>
+</section>
+
+<section>
 <h2>درخواستوں کا خلاصہ</h2>
 <div class="stats">
 <div class="stat">کل ریکارڈ<b id="total">0</b></div>
@@ -91,6 +101,19 @@ a{color:#0876a8;font-weight:650}.muted{color:#5d6878;font-size:.92rem}.tag{displ
 </ol>
 <a href="https://citaprevia.administracionelectronica.gob.es/icpplus/citar" target="_blank" rel="noopener noreferrer"><button type="button">سرکاری Cita پورٹل کھولیں</button></a>
 <p class="muted">پورٹل کی دستیابی، تقاضے اور اوقات متعلقہ دفتر کے اختیار میں ہیں۔ CAPTCHA اور OTP آپ خود سرکاری پورٹل پر درج کریں۔ ڈیش بورڈ OTP نہیں مانگتا، وصول نہیں کرتا اور محفوظ نہیں کرتا۔</p>
+</section>
+
+<section>
+<h2>بکنگ کے مراحل</h2>
+<ol class="steps">
+<li>سرکاری پورٹل کھولیں اور شہر/دفتر منتخب کریں۔</li>
+<li>اپائنٹمنٹ کی قسم منتخب کرکے فارم مکمل کریں۔</li>
+<li>اگر CAPTCHA آئے تو خود حل کرکے سرکاری پورٹل میں درج کریں۔</li>
+<li>اگر OTP آئے تو اپنے فون پر موصول ہونے والا کوڈ خود سرکاری پورٹل میں درج کریں۔ اسے اس ڈیش بورڈ میں محفوظ نہ کریں۔</li>
+<li>دستیاب وقت منتخب کرکے تمام تفصیلات خود چیک کریں۔</li>
+<li>آخری بکنگ کی تصدیق خود کریں، پھر اوپر ریکارڈ کا اسٹیٹس اپ ڈیٹ کریں۔</li>
+</ol>
+<button id="openPortalWorkflow" type="button">سرکاری پورٹل کھولیں</button>
 </section>
 
 <section>
@@ -207,9 +230,33 @@ $('testAlert').addEventListener('click',()=>{
  }
  notifyUser('Spain Cita — ٹیسٹ الرٹ','موبائل نوٹیفکیشن درست طور پر فعال ہے۔');
 });
-$('openPortal').addEventListener('click',()=>{
+function openOfficialPortal(){
  window.open('https://citaprevia.administracionelectronica.gob.es/icpplus/citar','_blank','noopener,noreferrer');
+}
+$('openPortal').addEventListener('click',openOfficialPortal);
+$('openPortalWorkflow').addEventListener('click',openOfficialPortal);
+
+let reminderTimer=null;
+function stopReminder(){
+ if(reminderTimer!==null){clearInterval(reminderTimer);reminderTimer=null;}
+ $('reminderStatus').textContent='یاددہانی بند ہے۔';
+}
+$('startReminder').addEventListener('click',async()=>{
+ if(!('Notification' in window)){alert('یہ براؤزر نوٹیفکیشن سپورٹ نہیں کرتا۔');return;}
+ if(Notification.permission!=='granted'){
+  const permission=await Notification.requestPermission();
+  if(permission!=='granted'){alert('یاددہانی کے لیے نوٹیفکیشن کی اجازت ضروری ہے۔');return;}
+ }
+ stopReminder();
+ const mins=Number($('reminderMinutes').value)||10;
+ $('reminderStatus').textContent='یاددہانی جاری ہے: ہر '+mins+' منٹ بعد۔ صفحہ کھلا رکھیں۔';
+ notifyUser('Spain Cita یاددہانی','سرکاری پورٹل کھول کر خود دستیاب وقت چیک کریں۔');
+ reminderTimer=setInterval(()=>{
+  notifyUser('Cita چیک کرنے کا وقت','سرکاری پورٹل پر دستیاب وقت خود چیک کریں۔ یہ خودکار availability check نہیں ہے۔');
+ },mins*60*1000);
 });
+$('stopReminder').addEventListener('click',stopReminder);
+window.addEventListener('beforeunload',stopReminder);
 $('cancelEdit').addEventListener('click',resetForm);
 $('filterText').addEventListener('input',render);
 $('filterStatus').addEventListener('change',render);
