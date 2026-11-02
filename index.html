@@ -46,6 +46,17 @@ a{color:#0876a8;font-weight:650}.muted{color:#5d6878;font-size:.92rem}.tag{displ
 </section>
 
 <section>
+<h2>نئی Cita تلاش شروع کریں</h2>
+<p>اپنا شہر اور اپائنٹمنٹ کی قسم منتخب کریں۔ بٹن سرکاری پورٹل کھولے گا؛ دستیاب وقت وہاں خود چیک کریں۔</p>
+<div class="grid">
+<div><label for="searchCity">شہر / صوبہ</label><select id="searchCity"><option>Barcelona</option><option>Madrid</option><option>Valencia</option><option>Alicante</option><option>Sevilla</option><option>Málaga</option><option>Girona</option><option>Tarragona</option><option>دیگر</option></select></div>
+<div><label for="searchKind">اپائنٹمنٹ کی قسم</label><select id="searchKind"><option value="Cita de Huellas / Toma de huellas">Cita de Huellas / Toma de huellas</option><option value="دیگر امیگریشن اپائنٹمنٹ">دیگر امیگریشن اپائنٹمنٹ</option></select></div>
+</div>
+<button id="beginSearch" type="button">منتخب تفصیل کے ساتھ سرکاری Cita پورٹل کھولیں</button>
+<p id="searchHelp" class="muted">پورٹل کھلنے کے بعد یہی شہر/صوبہ اور اپائنٹمنٹ کی قسم منتخب کریں۔ یہ بٹن خود سرکاری ویب سائٹ میں فارم نہیں بھرتا اور دستیاب اوقات خود نہیں پڑھتا۔</p>
+</section>
+
+<section>
 <h2>خود یاددہانی — Cita چیک کریں</h2>
 <p>یہ فیچر مقررہ وقفے سے آپ کو سرکاری پورٹل کھول کر خود وقت چیک کرنے کی یاددہانی دے گا۔ یہ دستیابی خود نہیں پڑھتا اور صفحہ کھلا رہنا ضروری ہے۔</p>
 <div class="grid">
@@ -234,6 +245,12 @@ function openOfficialPortal(){
  window.open('https://citaprevia.administracionelectronica.gob.es/icpplus/citar','_blank','noopener,noreferrer');
 }
 $('openPortal').addEventListener('click',openOfficialPortal);
+$('beginSearch').addEventListener('click',()=>{
+ const city=$('searchCity').value;
+ const kind=$('searchKind').value;
+ $('searchHelp').textContent='آپ نے '+city+' اور '+kind+' منتخب کیا ہے۔ سرکاری پورٹل میں یہی اختیارات منتخب کریں، پھر دستیاب اوقات خود دیکھیں۔';
+ openOfficialPortal();
+});
 $('openPortalWorkflow').addEventListener('click',openOfficialPortal);
 
 let reminderTimer=null;
