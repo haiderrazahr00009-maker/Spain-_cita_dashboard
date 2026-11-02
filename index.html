@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#123b5d">
+<link rel="manifest" href="manifest.webmanifest">
 <title>Spain Cita — معاون ڈیش بورڈ</title>
 <style>
 :root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#172033;background:#f2f5f9}
@@ -245,7 +246,7 @@ $('recordForm').addEventListener('submit',event=>{
 });
 function notifyUser(title,body){
  if('Notification' in window&&Notification.permission==='granted'){
-  try{new Notification(title,{body,tag:'spain-cita-alert'});}catch(error){}
+  try{new Notification(title,{body,tag:'spain-cita-'+Date.now()});}catch(error){}
  }
 }
 $('enableAlerts').addEventListener('click',async()=>{
@@ -318,7 +319,7 @@ $('startReminder').addEventListener('click',async()=>{
  $('reminderStatus').textContent='یاددہانی جاری ہے: ہر '+mins+' منٹ بعد۔ صفحہ کھلا رکھیں۔';
  notifyUser('Spain Cita یاددہانی','سرکاری پورٹل کھول کر خود دستیاب وقت چیک کریں۔');
  reminderTimer=setInterval(()=>{
-  notifyUser('Cita چیک کرنے کا وقت','سرکاری پورٹل پر دستیاب وقت خود چیک کریں۔ یہ خودکار availability check نہیں ہے۔');
+  notifyUser('یاددہانی نمبر '+mins,'اب '+mins+' منٹ مکمل ہو گئے ہیں۔ سرکاری پورٹل کھول کر خود Cita دستیابی چیک کریں۔ یہ خودکار تلاش نہیں ہے۔');
  },mins*60*1000);
 });
 $('stopReminder').addEventListener('click',stopReminder);
@@ -344,5 +345,13 @@ $('importFile').addEventListener('change',async event=>{
  finally{event.target.value='';}
 });
 render();
+
+// آف لائن استعمال کے لیے ایپ شیل محفوظ کریں۔ پہلی بار انٹرنیٹ کے ساتھ کھولنا ضروری ہے۔
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+ navigator.serviceWorker.register('./service-worker.js').then(()=>{
+  const p=document.createElement('p');p.className='muted';p.textContent='آف لائن سہولت فعال کرنے کی کوشش مکمل؛ پہلی بار صفحہ انٹرنیٹ کے ساتھ کھولیں۔';
+  document.querySelector('main').append(p);
+ }).catch(()=>{});
+}
 </script>
 </body></html>
