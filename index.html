@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spain Cita — ڈیش بورڈ</title>
+<style>
+*{box-sizing:border-box}body{margin:0;padding:18px;background:#f2f5f9;color:#172033;font-family:system-ui,sans-serif}main{max-width:900px;margin:auto}.hero{background:#123b5d;color:white;padding:24px;border-radius:16px}section{background:white;padding:18px;margin:16px 0;border-radius:14px;box-shadow:0 2px 12px #0001}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}label{display:block;margin:8px 0 4px;font-weight:600}input,select,textarea,button{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:8px;font:inherit}textarea{min-height:70px}button{background:#126b9b;color:white;border:0;margin-top:10px;cursor:pointer}.stats{display:flex;gap:10px;flex-wrap:wrap}.stat{background:#eaf3f9;padding:12px;border-radius:9px;flex:1;min-width:100px}.item{border:1px solid #ddd;padding:12px;margin:10px 0;border-radius:9px}a{color:#0876a8}
+</style></head><body><main>
+<div class="hero"><h1>Spain Cita — ڈیش بورڈ 🇪🇸</h1><p>اپائنٹمنٹ درخواستوں کا دستی ریکارڈ رکھیں۔ یہ خودکار بکنگ ٹول نہیں ہے۔</p></div>
+<section><h2>خلاصہ</h2><div class="stats"><div class="stat">کل: <b id="total">0</b></div><div class="stat">زیرِعمل: <b id="pending">0</b></div><div class="stat">مکمل: <b id="done">0</b></div></div></section>
+<section><h2>نیا ریکارڈ</h2><form id="f"><div class="grid">
+<div><label>کیس کوڈ</label><input id="code" required placeholder="CASE-001"></div>
+<div><label>شہر</label><select id="city"><option>Barcelona</option><option>Madrid</option><option>Valencia</option><option>Alicante</option><option>Sevilla</option><option>Málaga</option><option>Girona</option><option>Tarragona</option><option>دیگر</option></select></div>
+<div><label>قسم</label><select id="kind"><option>Cita de Huellas / Toma de huellas</option><option>دیگر امیگریشن اپائنٹمنٹ</option></select></div>
+<div><label>تاریخ</label><input id="date" type="date"></div>
+<div><label>اسٹیٹس</label><select id="status"><option>زیرِعمل</option><option>اپائنٹمنٹ مل گئی</option><option>مکمل</option></select></div>
+</div><label>نوٹس (حساس معلومات نہ لکھیں)</label><textarea id="notes"></textarea><button>محفوظ کریں</button></form></section>
+<section><h2>ریکارڈز</h2><button id="backup">JSON بیک اپ ڈاؤن لوڈ</button><div id="items">ابھی کوئی ریکارڈ نہیں۔</div></section>
+<section><h2>سرکاری پورٹل</h2><p><a href="https://citaprevia.administracionelectronica.gob.es/icpplus/citar" target="_blank" rel="noopener">Cita Previa کھولیں</a></p><p>CAPTCHA، OTP اور حتمی بکنگ خود مکمل کریں۔ پاسپورٹ، NIE/TIE نمبر، پاس ورڈ یا OTP یہاں محفوظ نہ کریں۔ ریکارڈ اسی براؤزر میں محفوظ ہوتا ہے۔</p></section>
+</main><script>
+const K='spainCitaRecords';let rows=[];try{rows=JSON.parse(localStorage.getItem(K)||'[]')}catch(e){}
+const $=x=>document.getElementById(x);
+function draw(){localStorage.setItem(K,JSON.stringify(rows));$('total').textContent=rows.length;$('pending').textContent=rows.filter(x=>x.status==='زیرِعمل').length;$('done').textContent=rows.filter(x=>x.status==='مکمل').length;$('items').innerHTML='';if(!rows.length){$('items').textContent='ابھی کوئی ریکارڈ نہیں۔';return}rows.forEach((x,i)=>{let d=document.createElement('div');d.className='item';let p=document.createElement('p');p.textContent=x.code+' | '+x.city+' | '+x.kind+' | '+(x.date||'تاریخ نہیں')+' | '+x.status;let n=document.createElement('p');n.textContent=x.notes;let b=document.createElement('button');b.textContent='حذف';b.onclick=()=>{rows.splice(i,1);draw()};d.append(p,n,b);$('items').append(d)})}
+$('f').onsubmit=e=>{e.preventDefault();rows.unshift({code:$('code').value.trim(),city:$('city').value,kind:$('kind').value,date:$('date').value,status:$('status').value,notes:$('notes').value.trim()});e.target.reset();draw()};
+$('backup').onclick=()=>{let a=document.createElement('a'),u=URL.createObjectURL(new Blob([JSON.stringify(rows,null,2)],{type:'application/json'}));a.href=u;a.download='spain-cita-backup.json';a.click();URL.revokeObjectURL(u)};draw();
+</script></body></html>
