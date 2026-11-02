@@ -128,6 +128,26 @@ a{color:#0876a8;font-weight:650}.muted{color:#5d6878;font-size:.92rem}.tag{displ
 </section>
 
 <section>
+<h2>بکنگ کی عملی چیک لسٹ</h2>
+<p>ہر مرحلہ مکمل ہونے پر نشان لگائیں۔ پیش رفت اسی براؤزر میں محفوظ رہے گی۔ پاسپورٹ، NIE، OTP یا پاس ورڈ یہاں درج نہ کریں۔</p>
+<div id="bookingChecklist">
+<label><input type="checkbox" data-book-step="0"> سرکاری پورٹل کھولا</label>
+<label><input type="checkbox" data-book-step="1"> درست صوبہ اور دفتر منتخب کیا</label>
+<label><input type="checkbox" data-book-step="2"> درست اپائنٹمنٹ ٹرامیٹ منتخب کیا</label>
+<label><input type="checkbox" data-book-step="3"> دستیاب تاریخ اور وقت خود دیکھا</label>
+<label><input type="checkbox" data-book-step="4"> CAPTCHA / OTP خود سرکاری پورٹل پر مکمل کیا (اگر مانگا گیا)</label>
+<label><input type="checkbox" data-book-step="5"> بکنگ کی آخری تفصیلات خود چیک کیں</label>
+<label><input type="checkbox" data-book-step="6"> سرکاری تصدیق / رسید حاصل کی</label>
+</div>
+<p id="bookingProgress" class="muted">پیش رفت: 0 از 7 مراحل</p>
+<div class="actions">
+<button id="checklistOpenPortal" type="button">پورٹل کھولیں</button>
+<button id="resetChecklist" class="secondary" type="button">چیک لسٹ دوبارہ شروع کریں</button>
+</div>
+<p class="notice">یہ چیک لسٹ آپ کی پیش رفت محفوظ کرتی ہے؛ یہ سرکاری بکنگ نہیں کرتی اور کسی مرحلے کی کامیابی کی خود تصدیق نہیں کرتی۔ بکنگ صرف سرکاری پورٹل کی رسید سے تصدیق شدہ ہوگی۔</p>
+</section>
+
+<section>
 <h2>ریکارڈ تلاش کریں اور بیک اپ</h2>
 <div class="toolbar">
 <div><label for="filterText">کیس کوڈ تلاش کریں</label><input id="filterText" placeholder="کیس کوڈ لکھیں"></div>
@@ -252,6 +272,35 @@ $('beginSearch').addEventListener('click',()=>{
  openOfficialPortal();
 });
 $('openPortalWorkflow').addEventListener('click',openOfficialPortal);
+
+const CHECK_KEY='spainCitaBookingChecklist';
+function loadChecklist(){
+ let saved=[];
+ try{const v=JSON.parse(localStorage.getItem(CHECK_KEY)||'[]');if(Array.isArray(v))saved=v;}catch(e){}
+ document.querySelectorAll('[data-book-step]').forEach(el=>{
+  const i=Number(el.dataset.bookStep);el.checked=saved[i]===true;
+  el.addEventListener('change',saveChecklist);
+ });
+ updateChecklistProgress();
+}
+function saveChecklist(){
+ const values=[...document.querySelectorAll('[data-book-step]')].map(el=>el.checked);
+ try{localStorage.setItem(CHECK_KEY,JSON.stringify(values));}catch(e){}
+ updateChecklistProgress();
+}
+function updateChecklistProgress(){
+ const all=[...document.querySelectorAll('[data-book-step]')];
+ const count=all.filter(el=>el.checked).length;
+ $('bookingProgress').textContent='پیش رفت: '+count+' از '+all.length+' مراحل مکمل';
+ if(count===all.length)$('bookingProgress').textContent+=' — تمام مراحل نشان زدہ ہیں؛ سرکاری رسید ضرور چیک کریں۔';
+}
+$('checklistOpenPortal').addEventListener('click',openOfficialPortal);
+$('resetChecklist').addEventListener('click',()=>{
+ if(!confirm('کیا آپ چیک لسٹ کی تمام نشانیاں ہٹانا چاہتے ہیں؟'))return;
+ document.querySelectorAll('[data-book-step]').forEach(el=>el.checked=false);
+ saveChecklist();
+});
+loadChecklist();
 
 let reminderTimer=null;
 function stopReminder(){
