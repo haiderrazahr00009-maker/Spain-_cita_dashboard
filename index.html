@@ -48,13 +48,13 @@ a{color:#0876a8;font-weight:650}.muted{color:#5d6878;font-size:.92rem}.tag{displ
 
 <section>
 <h2>نئی Cita تلاش شروع کریں</h2>
-<p>اپنا شہر اور اپائنٹمنٹ کی قسم منتخب کریں۔ بٹن سرکاری پورٹل کھولے گا؛ دستیاب وقت وہاں خود چیک کریں۔</p>
+<p>اپنا ہسپانوی صوبہ (Provincia) اور اپائنٹمنٹ کی قسم منتخب کریں۔ تمام پورٹل بٹن ایک ہی سرکاری ICP ویب سائٹ سے منسلک ہیں۔ صوبہ وہاں خود منتخب کرنا ہوگا۔</p>
 <div class="grid">
-<div><label for="searchCity">شہر / صوبہ</label><select id="searchCity"><option>Barcelona</option><option>Madrid</option><option>Valencia</option><option>Alicante</option><option>Sevilla</option><option>Málaga</option><option>Girona</option><option>Tarragona</option><option>دیگر</option></select></div>
+<div><label for="searchCity">صوبہ (Provincia)</label><select id="searchCity"><option value="">صوبہ منتخب کریں</option><option value="A Coruña">A Coruña</option><option value="Álava">Álava</option><option value="Albacete">Albacete</option><option value="Alicante">Alicante</option><option value="Almería">Almería</option><option value="Asturias">Asturias</option><option value="Ávila">Ávila</option><option value="Badajoz">Badajoz</option><option value="Barcelona">Barcelona</option><option value="Bizkaia">Bizkaia</option><option value="Burgos">Burgos</option><option value="Cáceres">Cáceres</option><option value="Cádiz">Cádiz</option><option value="Cantabria">Cantabria</option><option value="Castellón">Castellón</option><option value="Ciudad Real">Ciudad Real</option><option value="Córdoba">Córdoba</option><option value="Cuenca">Cuenca</option><option value="Girona">Girona</option><option value="Granada">Granada</option><option value="Guadalajara">Guadalajara</option><option value="Gipuzkoa">Gipuzkoa</option><option value="Huelva">Huelva</option><option value="Huesca">Huesca</option><option value="Illes Balears">Illes Balears</option><option value="Jaén">Jaén</option><option value="La Rioja">La Rioja</option><option value="Las Palmas">Las Palmas</option><option value="León">León</option><option value="Lleida">Lleida</option><option value="Lugo">Lugo</option><option value="Madrid">Madrid</option><option value="Málaga">Málaga</option><option value="Murcia">Murcia</option><option value="Navarra">Navarra</option><option value="Ourense">Ourense</option><option value="Palencia">Palencia</option><option value="Pontevedra">Pontevedra</option><option value="Salamanca">Salamanca</option><option value="Santa Cruz de Tenerife">Santa Cruz de Tenerife</option><option value="Segovia">Segovia</option><option value="Sevilla">Sevilla</option><option value="Soria">Soria</option><option value="Tarragona">Tarragona</option><option value="Teruel">Teruel</option><option value="Toledo">Toledo</option><option value="Valencia">Valencia</option><option value="Valladolid">Valladolid</option><option value="Zamora">Zamora</option><option value="Zaragoza">Zaragoza</option><option value="Ceuta">Ceuta</option><option value="Melilla">Melilla</option><option value="دیگر">دیگر</option></select></div>
 <div><label for="searchKind">اپائنٹمنٹ کی قسم</label><select id="searchKind"><option value="Cita de Huellas / Toma de huellas">Cita de Huellas / Toma de huellas</option><option value="دیگر امیگریشن اپائنٹمنٹ">دیگر امیگریشن اپائنٹمنٹ</option></select></div>
 </div>
 <button id="beginSearch" type="button">منتخب تفصیل کے ساتھ سرکاری Cita پورٹل کھولیں</button>
-<p id="searchHelp" class="muted">پورٹل کھلنے کے بعد یہی شہر/صوبہ اور اپائنٹمنٹ کی قسم منتخب کریں۔ یہ بٹن خود سرکاری ویب سائٹ میں فارم نہیں بھرتا اور دستیاب اوقات خود نہیں پڑھتا۔</p>
+<p id="searchHelp" class="muted">اہم: سرکاری ویب سائٹ ہر بار اپنا صوبہ منتخب کرنے کا مرحلہ دکھاتی ہے۔ ڈیش بورڈ آپ کا انتخاب یاد رکھتا ہے، مگر سرکاری فارم میں خودکار طور پر نہیں بھرتا۔</p>
 </section>
 
 <section>
@@ -83,7 +83,7 @@ a{color:#0876a8;font-weight:650}.muted{color:#5d6878;font-size:.92rem}.tag{displ
 <input type="hidden" id="editId">
 <div class="grid">
 <div><label for="code">کیس کوڈ *</label><input id="code" required maxlength="50" placeholder="مثلاً CASE-001"></div>
-<div><label for="city">شہر</label><select id="city"><option>Barcelona</option><option>Madrid</option><option>Valencia</option><option>Alicante</option><option>Sevilla</option><option>Málaga</option><option>Girona</option><option>Tarragona</option><option>دیگر</option></select></div>
+<div><label for="city">شہر</label><select id="city"><option value="Barcelona">Barcelona</option><option value="A Coruña">A Coruña</option><option value="Álava">Álava</option><option value="Albacete">Albacete</option><option value="Alicante">Alicante</option><option value="Almería">Almería</option><option value="Asturias">Asturias</option><option value="Ávila">Ávila</option><option value="Badajoz">Badajoz</option><option value="Bizkaia">Bizkaia</option><option value="Burgos">Burgos</option><option value="Cáceres">Cáceres</option><option value="Cádiz">Cádiz</option><option value="Cantabria">Cantabria</option><option value="Castellón">Castellón</option><option value="Ciudad Real">Ciudad Real</option><option value="Córdoba">Córdoba</option><option value="Cuenca">Cuenca</option><option value="Girona">Girona</option><option value="Granada">Granada</option><option value="Guadalajara">Guadalajara</option><option value="Gipuzkoa">Gipuzkoa</option><option value="Huelva">Huelva</option><option value="Huesca">Huesca</option><option value="Illes Balears">Illes Balears</option><option value="Jaén">Jaén</option><option value="La Rioja">La Rioja</option><option value="Las Palmas">Las Palmas</option><option value="León">León</option><option value="Lleida">Lleida</option><option value="Lugo">Lugo</option><option value="Madrid">Madrid</option><option value="Málaga">Málaga</option><option value="Murcia">Murcia</option><option value="Navarra">Navarra</option><option value="Ourense">Ourense</option><option value="Palencia">Palencia</option><option value="Pontevedra">Pontevedra</option><option value="Salamanca">Salamanca</option><option value="Santa Cruz de Tenerife">Santa Cruz de Tenerife</option><option value="Segovia">Segovia</option><option value="Sevilla">Sevilla</option><option value="Soria">Soria</option><option value="Tarragona">Tarragona</option><option value="Teruel">Teruel</option><option value="Toledo">Toledo</option><option value="Valencia">Valencia</option><option value="Valladolid">Valladolid</option><option value="Zamora">Zamora</option><option value="Zaragoza">Zaragoza</option><option value="Ceuta">Ceuta</option><option value="Melilla">Melilla</option><option value="دیگر">دیگر</option></select></div>
 <div><label for="kind">اپائنٹمنٹ کی قسم</label><select id="kind"><option>Cita de Huellas / Toma de huellas</option><option>دیگر امیگریشن اپائنٹمنٹ</option></select></div>
 <div><label for="date">مطلوبہ یا بک شدہ تاریخ</label><input id="date" type="date"></div>
 <div><label for="status">موجودہ اسٹیٹس</label><select id="status"><option>زیرِعمل</option><option>وقت مل گیا</option><option>مکمل</option></select></div>
@@ -111,7 +111,7 @@ a{color:#0876a8;font-weight:650}.muted{color:#5d6878;font-size:.92rem}.tag{displ
 <li>CAPTCHA اور اگر مانگا جائے تو OTP خود درج کریں؛ کسی کوڈ یا پاس ورڈ کو اس ڈیش بورڈ میں نہ ڈالیں۔</li>
 <li>آخری تصدیق کے بعد ہی ریکارڈ کا اسٹیٹس «وقت مل گیا» یا «مکمل» کریں۔</li>
 </ol>
-<a href="https://citaprevia.administracionelectronica.gob.es/icpplus/citar" target="_blank" rel="noopener noreferrer"><button type="button">سرکاری Cita پورٹل کھولیں</button></a>
+<a href="https://sede.administracionespublicas.gob.es/pagina/index/directorio/icpplus" target="_blank" rel="noopener noreferrer"><button type="button">سرکاری Cita پورٹل کھولیں</button></a>
 <p class="muted">پورٹل کی دستیابی، تقاضے اور اوقات متعلقہ دفتر کے اختیار میں ہیں۔ CAPTCHA اور OTP آپ خود سرکاری پورٹل پر درج کریں۔ ڈیش بورڈ OTP نہیں مانگتا، وصول نہیں کرتا اور محفوظ نہیں کرتا۔</p>
 </section>
 
@@ -262,17 +262,23 @@ $('testAlert').addEventListener('click',()=>{
  }
  notifyUser('Spain Cita — ٹیسٹ الرٹ','موبائل نوٹیفکیشن درست طور پر فعال ہے۔');
 });
-function openOfficialPortal(){
- window.open('https://citaprevia.administracionelectronica.gob.es/icpplus/citar','_blank','noopener,noreferrer');
-}
+const OFFICIAL_PORTAL_URL='https://sede.administracionespublicas.gob.es/pagina/index/directorio/icpplus';
+function getSavedPortalChoice(){try{return JSON.parse(localStorage.getItem('spainCitaPortalChoice')||'{}');}catch(e){return {};}}
+function savePortalChoice(province,kind){try{localStorage.setItem('spainCitaPortalChoice',JSON.stringify({province,kind,updatedAt:new Date().toISOString()}));}catch(e){}}
+function openOfficialPortal(){window.open(OFFICIAL_PORTAL_URL,'_blank','noopener,noreferrer');}
 $('openPortal').addEventListener('click',openOfficialPortal);
 $('beginSearch').addEventListener('click',()=>{
- const city=$('searchCity').value;
- const kind=$('searchKind').value;
- $('searchHelp').textContent='آپ نے '+city+' اور '+kind+' منتخب کیا ہے۔ سرکاری پورٹل میں یہی اختیارات منتخب کریں، پھر دستیاب اوقات خود دیکھیں۔';
+ const province=$('searchCity').value,kind=$('searchKind').value;
+ if(!province){$('searchHelp').textContent='براہِ کرم پہلے صوبہ منتخب کریں۔';$('searchCity').focus();return;}
+ savePortalChoice(province,kind);
+ $('searchHelp').textContent='آپ کا انتخاب محفوظ ہوگیا: '+province+' — '+kind+'۔ سرکاری ویب سائٹ میں PROVINCIAS DISPONIBLES سے '+province+' منتخب کریں، پھر Aceptar دبائیں اور متعلقہ ٹرامیٹ خود منتخب کریں۔';
  openOfficialPortal();
 });
 $('openPortalWorkflow').addEventListener('click',openOfficialPortal);
+$('city').addEventListener('change',()=>{if($('city').value)$('searchCity').value=$('city').value;});
+const savedPortalChoice=getSavedPortalChoice();
+if(savedPortalChoice.province && [...$('searchCity').options].some(o=>o.value===savedPortalChoice.province)) $('searchCity').value=savedPortalChoice.province;
+if(savedPortalChoice.kind && [...$('searchKind').options].some(o=>o.value===savedPortalChoice.kind)) $('searchKind').value=savedPortalChoice.kind;
 
 const CHECK_KEY='spainCitaBookingChecklist';
 function loadChecklist(){
