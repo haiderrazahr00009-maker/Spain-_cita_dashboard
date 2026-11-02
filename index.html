@@ -1,26 +1,193 @@
 <!doctype html>
 <html lang="ur" dir="rtl">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Spain Cita — ڈیش بورڈ</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#123b5d">
+<title>Spain Cita — معاون ڈیش بورڈ</title>
 <style>
-*{box-sizing:border-box}body{margin:0;padding:18px;background:#f2f5f9;color:#172033;font-family:system-ui,sans-serif}main{max-width:900px;margin:auto}.hero{background:#123b5d;color:white;padding:24px;border-radius:16px}section{background:white;padding:18px;margin:16px 0;border-radius:14px;box-shadow:0 2px 12px #0001}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}label{display:block;margin:8px 0 4px;font-weight:600}input,select,textarea,button{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:8px;font:inherit}textarea{min-height:70px}button{background:#126b9b;color:white;border:0;margin-top:10px;cursor:pointer}.stats{display:flex;gap:10px;flex-wrap:wrap}.stat{background:#eaf3f9;padding:12px;border-radius:9px;flex:1;min-width:100px}.item{border:1px solid #ddd;padding:12px;margin:10px 0;border-radius:9px}a{color:#0876a8}
-</style></head><body><main>
-<div class="hero"><h1>Spain Cita — ڈیش بورڈ 🇪🇸</h1><p>اپائنٹمنٹ درخواستوں کا دستی ریکارڈ رکھیں۔ یہ خودکار بکنگ ٹول نہیں ہے۔</p></div>
-<section><h2>خلاصہ</h2><div class="stats"><div class="stat">کل: <b id="total">0</b></div><div class="stat">زیرِعمل: <b id="pending">0</b></div><div class="stat">مکمل: <b id="done">0</b></div></div></section>
-<section><h2>نیا ریکارڈ</h2><form id="f"><div class="grid">
-<div><label>کیس کوڈ</label><input id="code" required placeholder="CASE-001"></div>
-<div><label>شہر</label><select id="city"><option>Barcelona</option><option>Madrid</option><option>Valencia</option><option>Alicante</option><option>Sevilla</option><option>Málaga</option><option>Girona</option><option>Tarragona</option><option>دیگر</option></select></div>
-<div><label>قسم</label><select id="kind"><option>Cita de Huellas / Toma de huellas</option><option>دیگر امیگریشن اپائنٹمنٹ</option></select></div>
-<div><label>تاریخ</label><input id="date" type="date"></div>
-<div><label>اسٹیٹس</label><select id="status"><option>زیرِعمل</option><option>اپائنٹمنٹ مل گئی</option><option>مکمل</option></select></div>
-</div><label>نوٹس (حساس معلومات نہ لکھیں)</label><textarea id="notes"></textarea><button>محفوظ کریں</button></form></section>
-<section><h2>ریکارڈز</h2><button id="backup">JSON بیک اپ ڈاؤن لوڈ</button><div id="items">ابھی کوئی ریکارڈ نہیں۔</div></section>
-<section><h2>سرکاری پورٹل</h2><p><a href="https://citaprevia.administracionelectronica.gob.es/icpplus/citar" target="_blank" rel="noopener">Cita Previa کھولیں</a></p><p>CAPTCHA، OTP اور حتمی بکنگ خود مکمل کریں۔ پاسپورٹ، NIE/TIE نمبر، پاس ورڈ یا OTP یہاں محفوظ نہ کریں۔ ریکارڈ اسی براؤزر میں محفوظ ہوتا ہے۔</p></section>
-</main><script>
-const K='spainCitaRecords';let rows=[];try{rows=JSON.parse(localStorage.getItem(K)||'[]')}catch(e){}
-const $=x=>document.getElementById(x);
-function draw(){localStorage.setItem(K,JSON.stringify(rows));$('total').textContent=rows.length;$('pending').textContent=rows.filter(x=>x.status==='زیرِعمل').length;$('done').textContent=rows.filter(x=>x.status==='مکمل').length;$('items').innerHTML='';if(!rows.length){$('items').textContent='ابھی کوئی ریکارڈ نہیں۔';return}rows.forEach((x,i)=>{let d=document.createElement('div');d.className='item';let p=document.createElement('p');p.textContent=x.code+' | '+x.city+' | '+x.kind+' | '+(x.date||'تاریخ نہیں')+' | '+x.status;let n=document.createElement('p');n.textContent=x.notes;let b=document.createElement('button');b.textContent='حذف';b.onclick=()=>{rows.splice(i,1);draw()};d.append(p,n,b);$('items').append(d)})}
-$('f').onsubmit=e=>{e.preventDefault();rows.unshift({code:$('code').value.trim(),city:$('city').value,kind:$('kind').value,date:$('date').value,status:$('status').value,notes:$('notes').value.trim()});e.target.reset();draw()};
-$('backup').onclick=()=>{let a=document.createElement('a'),u=URL.createObjectURL(new Blob([JSON.stringify(rows,null,2)],{type:'application/json'}));a.href=u;a.download='spain-cita-backup.json';a.click();URL.revokeObjectURL(u)};draw();
-</script></body></html>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#172033;background:#f2f5f9}
+*{box-sizing:border-box}body{margin:0;padding:16px;line-height:1.65}main{max-width:1000px;margin:auto}
+.hero{background:linear-gradient(130deg,#123b5d,#176b91);color:#fff;padding:24px;border-radius:18px}
+section{background:#fff;padding:18px;margin:16px 0;border-radius:14px;box-shadow:0 2px 12px #0000000c}
+h1,h2{margin-top:0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+label{display:block;margin:8px 0 4px;font-weight:650}input,select,textarea,button{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:9px;font:inherit}
+textarea{min-height:78px;resize:vertical}button{background:#126b9b;color:white;border:0;margin-top:10px;cursor:pointer;font-weight:650}
+button.secondary{background:#e8f1f6;color:#123b5d;border:1px solid #cbd5e1}button.danger{background:#a83232}
+button:focus,input:focus,select:focus,textarea:focus{outline:3px solid #8ac8e5;outline-offset:1px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}.stat{background:#eaf3f9;padding:12px;border-radius:10px}
+.stat b{display:block;font-size:1.45rem}.notice{background:#fff8df;border-right:4px solid #d99a19;padding:12px;border-radius:8px}
+.steps li{margin:8px 0}.item{border:1px solid #d8e0e8;padding:13px;margin:10px 0;border-radius:10px}
+.item p{margin:4px 0}.actions{display:flex;gap:8px;flex-wrap:wrap}.actions button{width:auto;flex:1;min-width:100px}
+a{color:#0876a8;font-weight:650}.muted{color:#5d6878;font-size:.92rem}.tag{display:inline-block;background:#eaf3f9;padding:2px 9px;border-radius:20px;font-size:.85rem}
+.toolbar{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+@media(max-width:520px){body{padding:9px}.hero,section{padding:14px}.actions button{min-width:100%}}
+</style>
+</head>
+<body><main>
+<header class="hero">
+<h1>Spain Cita — معاون ڈیش بورڈ 🇪🇸</h1>
+<p>اپائنٹمنٹ تلاش کرنے کے عمل میں رہنمائی، درخواستوں کا ریکارڈ، اور بکنگ کی پیش رفت ایک جگہ رکھیں۔</p>
+</header>
+
+<section>
+<h2>اہم وضاحت</h2>
+<div class="notice">یہ ڈیش بورڈ سرکاری Cita ویب سائٹ سے دستیاب اوقات خود نہیں پڑھتا، CAPTCHA حل نہیں کرتا، OTP حاصل نہیں کرتا اور خود بکنگ جمع نہیں کرتا۔ یہ آپ کو سرکاری پورٹل تک لے جاتا ہے اور آپ کی اپنی درج کردہ پیش رفت محفوظ رکھتا ہے۔ CAPTCHA/OTP اور آخری بکنگ آپ خود سرکاری ویب سائٹ پر مکمل کریں۔</div>
+</section>
+
+<section>
+<h2>درخواستوں کا خلاصہ</h2>
+<div class="stats">
+<div class="stat">کل ریکارڈ<b id="total">0</b></div>
+<div class="stat">زیرِعمل<b id="pending">0</b></div>
+<div class="stat">وقت مل گیا<b id="found">0</b></div>
+<div class="stat">مکمل<b id="done">0</b></div>
+</div>
+</section>
+
+<section>
+<h2 id="formTitle">نیا ریکارڈ شامل کریں</h2>
+<form id="recordForm">
+<input type="hidden" id="editId">
+<div class="grid">
+<div><label for="code">کیس کوڈ *</label><input id="code" required maxlength="50" placeholder="مثلاً CASE-001"></div>
+<div><label for="city">شہر</label><select id="city"><option>Barcelona</option><option>Madrid</option><option>Valencia</option><option>Alicante</option><option>Sevilla</option><option>Málaga</option><option>Girona</option><option>Tarragona</option><option>دیگر</option></select></div>
+<div><label for="kind">اپائنٹمنٹ کی قسم</label><select id="kind"><option>Cita de Huellas / Toma de huellas</option><option>دیگر امیگریشن اپائنٹمنٹ</option></select></div>
+<div><label for="date">مطلوبہ یا بک شدہ تاریخ</label><input id="date" type="date"></div>
+<div><label for="status">موجودہ اسٹیٹس</label><select id="status"><option>زیرِعمل</option><option>وقت مل گیا</option><option>مکمل</option></select></div>
+</div>
+<label for="notes">نوٹس (صرف غیر حساس معلومات)</label><textarea id="notes" maxlength="1000" placeholder="مثلاً آج سرکاری پورٹل پر وقت دستیاب نہیں تھا۔"></textarea>
+<div class="actions"><button id="saveBtn" type="submit">ریکارڈ محفوظ کریں</button><button class="secondary" id="cancelEdit" type="button" hidden>ترمیم منسوخ کریں</button></div>
+<p class="muted">پاسپورٹ نمبر، NIE/TIE، پاس ورڈ، OTP یا کسی دوسرے شخص کی نجی معلومات یہاں نہ لکھیں۔</p>
+</form>
+</section>
+
+<section>
+<h2>سرکاری Cita تلاش کرنے میں رہنمائی</h2>
+<ol class="steps">
+<li>نیچے دیے گئے بٹن سے سرکاری پورٹل کھولیں۔</li>
+<li>اپنا صوبہ/شہر اور متعلقہ پولیس یا امیگریشن دفتر منتخب کریں۔</li>
+<li>اپائنٹمنٹ کی قسم منتخب کرکے سرکاری فارم کی ہدایات پر عمل کریں۔</li>
+<li>اگر دستیاب وقت نظر آئے تو تاریخ اور وقت خود چیک کریں۔</li>
+<li>CAPTCHA اور اگر مانگا جائے تو OTP خود درج کریں؛ کسی کوڈ یا پاس ورڈ کو اس ڈیش بورڈ میں نہ ڈالیں۔</li>
+<li>آخری تصدیق کے بعد ہی ریکارڈ کا اسٹیٹس «وقت مل گیا» یا «مکمل» کریں۔</li>
+</ol>
+<a href="https://citaprevia.administracionelectronica.gob.es/icpplus/citar" target="_blank" rel="noopener noreferrer"><button type="button">سرکاری Cita پورٹل کھولیں</button></a>
+<p class="muted">پورٹل کی دستیابی، تقاضے اور اوقات متعلقہ دفتر کے اختیار میں ہیں۔ یہ ڈیش بورڈ ان کی ضمانت نہیں دیتا۔</p>
+</section>
+
+<section>
+<h2>ریکارڈ تلاش کریں اور بیک اپ</h2>
+<div class="toolbar">
+<div><label for="filterText">کیس کوڈ تلاش کریں</label><input id="filterText" placeholder="کیس کوڈ لکھیں"></div>
+<div><label for="filterStatus">اسٹیٹس کے مطابق فلٹر</label><select id="filterStatus"><option value="">تمام اسٹیٹس</option><option>زیرِعمل</option><option>وقت مل گیا</option><option>مکمل</option></select></div>
+</div>
+<div class="actions">
+<button id="backup" type="button">JSON بیک اپ ڈاؤن لوڈ</button>
+<button class="secondary" id="importBtn" type="button">JSON بیک اپ بحال کریں</button>
+<input id="importFile" type="file" accept=".json,application/json" hidden>
+</div>
+<div id="items" aria-live="polite">ابھی کوئی ریکارڈ نہیں۔</div>
+</section>
+
+<section>
+<h2>آپ کے ڈیٹا کی حفاظت</h2>
+<ul>
+<li>ریکارڈ صرف اسی براؤزر اور اسی ڈیوائس میں محفوظ ہوتے ہیں؛ دوسرے موبائل پر خود بخود نہیں آئیں گے۔</li>
+<li>براؤزر کا ڈیٹا صاف کرنے سے ریکارڈ ضائع ہو سکتے ہیں، اس لیے بیک اپ ڈاؤن لوڈ کرکے محفوظ رکھیں۔</li>
+<li>بیک اپ فائل میں آپ کے درج کردہ کیس کوڈ اور نوٹس ہو سکتے ہیں؛ اسے کسی غیر متعلقہ شخص سے شیئر نہ کریں۔</li>
+</ul>
+</section>
+</main>
+
+<script>
+'use strict';
+const STORAGE_KEY='spainCitaRecords';
+const $=id=>document.getElementById(id);
+let records=[];
+try{
+ const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');
+ records=Array.isArray(saved)?saved.filter(x=>x&&typeof x==='object'):[];
+}catch(error){records=[];}
+
+function persist(){
+ try{localStorage.setItem(STORAGE_KEY,JSON.stringify(records));return true;}
+ catch(error){alert('ڈیٹا محفوظ نہیں ہو سکا۔ ممکن ہے براؤزر کی اسٹوریج بھر گئی ہو۔ فوراً بیک اپ ڈاؤن لوڈ کریں۔');return false;}
+}
+function safeText(value){return String(value??'');}
+function makeButton(label,className,handler){
+ const b=document.createElement('button');b.type='button';b.textContent=label;
+ if(className)b.className=className;b.addEventListener('click',handler);return b;
+}
+function render(){
+ $('total').textContent=records.length;
+ $('pending').textContent=records.filter(x=>x.status==='زیرِعمل').length;
+ $('found').textContent=records.filter(x=>x.status==='وقت مل گیا').length;
+ $('done').textContent=records.filter(x=>x.status==='مکمل').length;
+ const q=$('filterText').value.trim().toLocaleLowerCase();
+ const s=$('filterStatus').value;
+ const visible=records.filter(x=>(!q||safeText(x.code).toLocaleLowerCase().includes(q))&&(!s||x.status===s));
+ const root=$('items');root.replaceChildren();
+ if(!visible.length){root.textContent=records.length?'اس فلٹر کے مطابق کوئی ریکارڈ نہیں۔':'ابھی کوئی ریکارڈ نہیں۔';return;}
+ visible.forEach(record=>{
+  const card=document.createElement('article');card.className='item';
+  const title=document.createElement('strong');title.textContent=record.code||'بغیر کیس کوڈ';
+  const badge=document.createElement('span');badge.className='tag';badge.textContent=record.status||'زیرِعمل';
+  const detail=document.createElement('p');detail.textContent=[record.city,record.kind,record.date||'تاریخ درج نہیں'].filter(Boolean).join(' • ');
+  const note=document.createElement('p');note.textContent=record.notes||'کوئی نوٹ نہیں';
+  const actions=document.createElement('div');actions.className='actions';
+  actions.append(makeButton('ترمیم','secondary',()=>editRecord(record.id)));
+  actions.append(makeButton('حذف','danger',()=>deleteRecord(record.id)));
+  card.append(title,document.createTextNode(' '),badge,detail,note,actions);root.append(card);
+ });
+}
+function resetForm(){
+ $('recordForm').reset();$('editId').value='';$('formTitle').textContent='نیا ریکارڈ شامل کریں';
+ $('saveBtn').textContent='ریکارڈ محفوظ کریں';$('cancelEdit').hidden=true;
+}
+function editRecord(id){
+ const r=records.find(x=>x.id===id);if(!r)return;
+ $('editId').value=r.id;$('code').value=r.code||'';$('city').value=r.city||'Barcelona';
+ $('kind').value=r.kind||'Cita de Huellas / Toma de huellas';$('date').value=r.date||'';
+ $('status').value=r.status||'زیرِعمل';$('notes').value=r.notes||'';
+ $('formTitle').textContent='ریکارڈ میں ترمیم کریں';$('saveBtn').textContent='تبدیلی محفوظ کریں';$('cancelEdit').hidden=false;
+ $('formTitle').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function deleteRecord(id){
+ if(!confirm('کیا آپ یہ ریکارڈ حذف کرنا چاہتے ہیں؟'))return;
+ records=records.filter(x=>x.id!==id);if(persist())render();
+}
+$('recordForm').addEventListener('submit',event=>{
+ event.preventDefault();
+ const code=$('code').value.trim();if(!code){alert('کیس کوڈ درج کریں۔');return;}
+ const editId=$('editId').value;
+ const duplicate=records.some(x=>x.code.toLocaleLowerCase()===code.toLocaleLowerCase()&&x.id!==editId);
+ if(duplicate&&!confirm('یہ کیس کوڈ پہلے سے موجود ہے۔ کیا پھر بھی محفوظ کرنا ہے؟'))return;
+ const data={id:editId||((crypto&&crypto.randomUUID)?crypto.randomUUID():String(Date.now())+'-'+Math.random().toString(16).slice(2)),code,city:$('city').value,kind:$('kind').value,date:$('date').value,status:$('status').value,notes:$('notes').value.trim()};
+ if(editId){const i=records.findIndex(x=>x.id===editId);if(i>=0)records[i]=data;else records.unshift(data);}
+ else records.unshift(data);
+ if(persist()){resetForm();render();}
+});
+$('cancelEdit').addEventListener('click',resetForm);
+$('filterText').addEventListener('input',render);
+$('filterStatus').addEventListener('change',render);
+$('backup').addEventListener('click',()=>{
+ const blob=new Blob([JSON.stringify(records,null,2)],{type:'application/json'});
+ const url=URL.createObjectURL(blob);const a=document.createElement('a');
+ a.href=url;a.download='spain-cita-backup.json';document.body.append(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+});
+$('importBtn').addEventListener('click',()=>$('importFile').click());
+$('importFile').addEventListener('change',async event=>{
+ const file=event.target.files&&event.target.files[0];if(!file)return;
+ try{
+  const parsed=JSON.parse(await file.text());if(!Array.isArray(parsed))throw new Error('invalid');
+  if(!confirm('بیک اپ کے '+parsed.length+' ریکارڈ موجود ہیں۔ موجودہ ریکارڈ کے ساتھ شامل کریں؟'))return;
+  const imported=parsed.filter(x=>x&&typeof x==='object'&&typeof x.code==='string').map(x=>({...x,id:String(x.id||Date.now()+'-'+Math.random())}));
+  records=[...imported,...records];if(persist())render();
+ }catch(error){alert('یہ درست JSON بیک اپ فائل نہیں ہے۔');}
+ finally{event.target.value='';}
+});
+render();
+</script>
+</body></html>
