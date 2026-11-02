@@ -1,0 +1,12 @@
+{
+  "name": "Spain Cita Dashboard",
+  "short_name": "Spain Cita",
+  "lang": "ur",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f2f5f9",
+  "theme_color": "#123b5d",
+  "description": "اسپین Cita درخواستوں کا ذاتی ریکارڈ اور یاددہانی"
+}
